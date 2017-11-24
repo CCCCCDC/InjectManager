@@ -1,0 +1,215 @@
+<!--
+ Author: Amanda Szampias
+ Date: March 7, 2017
+ Team: Cuyahoga Community College Year 1 - 2.
+ Position: Web Admin/Developer
+ Note: The ISE Manager keeps track of the person assigned to 
+ an inject, who the inject is for, and the minutes remaining.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ISE Manager</title>
+    <style type="text/css">
+      
+      body { background-color: #def; }
+
+      table { border-collapse: collapse; }
+
+      td { border: 1px solid black;
+           font-size: 14pt;
+           padding: 2px; }
+		   
+	   th { border: 1px solid black; font-weight: normal;
+            margin: 2px;	   }
+
+      td:first-child input { width: 200px;  }
+      td:nth-child(2) input { width: 80px; } 
+      td:nth-child(3) input { width: 120px; }
+      td:nth-child(4) input { width: 50px; }
+	  td:nth-child(5) { font-size: 15pt;
+                        text-align: center;	  }
+	 
+      input { height: 24px;}	  
+	  h2 { text-align: center;}
+	  button { height: 30px; display: block; }
+
+    </style>
+  </head>
+  <body>
+  <h2 style="margin: 0 auto">Cuyahoga Community College Inject Time Manager</h2>
+  <hr />
+  <table id="lastTR">
+    <tr>
+      <th>Inject Name</th>
+      <th>Person</th>
+	  <th>For Who</th>
+      <th>Minutes</th>
+      <th>Time Remaining</th>
+    </tr>
+    <tr>
+      <td><input type="text" name="inject1" /></td>
+      <td><input type="text" name="person1" /></td>
+	  <td><input type="text" name="who1" /></td>
+      <td><input type="text" name="minutes1" id="minutes1" /></td>
+      <td id="time1"></td>
+      <td><button type="button" id="btnInject1">Start</button></td>
+	  <td><button type="button" id="btnClear1">Clear</button></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="inject2" /></td>
+      <td><input type="text" name="person2" /></td>
+	  <td><input type="text" name="who2" /></td>
+      <td><input type="text" name="minutes2" id="minutes2" /></td>
+      <td id="time2"></td>
+      <td><button type="button" id="btnInject2" class="btnAll">Start</button></td>
+	  <td><button type="button" id="btnClear2">Clear</button></td>
+    </tr>
+  </table>
+  <button type="button" id="btnAdd">Add Another Row</button>
+
+  <script type="text/javascript">
+    var btnInject1 = document.getElementById("btnInject1");
+    var spans = document.getElementsByClassName('btnAll');
+	var btnAdd = document.getElementById("btnAdd");
+	var lastTR = document.getElementById("lastTR");
+
+    function startTimer(duration, display, btnClear) {
+    var timer = duration, minutes, seconds;
+     var it = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display1 = document.getElementById(display);
+        display.innerHTML = minutes + ":" + seconds;
+        
+		if (minutes < 4)
+		{ 
+		  display.style.backgroundColor = "red";
+		}
+		if (--timer < 0) 
+		{
+		  display.style.backgroundColor = "#def";
+		  clearInterval(it);
+		  
+        }
+		
+		btnClear.onclick = function()
+		{
+		  clearInterval(it);
+		  display.innerHTML = "";  
+		  display.style.backgroundColor = "#def";
+		}
+    }, 1000);
+}
+
+function SetTime(minutes, querySelec, btnClick)
+{
+     var fiveMinutes = 60 * minutes;
+     display = document.querySelector(querySelec);
+     startTimer(fiveMinutes, display, btnClick);
+};
+
+btnInject1.onclick = function() 
+{ 
+    var btnInject1 = document.getElementById("btnInject1");
+    var minutes1 = document.getElementById("minutes1").value;
+	var btnClear1 = document.getElementById("btnClear1");
+  //  btnInject1.innerHTML = "Stop" 
+    SetTime(minutes1, "#time1", btnClear1);
+}
+
+btnInject2.onclick = function() 
+{ 
+    var btnInject2 = document.getElementById("btnInject2");
+    var minutes2 = document.getElementById("minutes2").value;
+	var btnClear2 = document.getElementById("btnClear2");
+   // btnInject2.innerHTML = "Stop";
+    SetTime(minutes2, "#time2", btnClear2);
+}
+
+// Start at the third row.
+var intCount = 3;
+ 
+btnAdd.onclick = function()
+{  
+  // Column Inject Name // 
+  var trNew = document.createElement("tr");
+  var tdNew = document.createElement("td");
+  var input0 = document.createElement("input");  
+  tdNew.appendChild(input0);  
+  trNew.appendChild(tdNew);
+  lastTR.appendChild(trNew);
+  // Column Inject Name //
+  // Column Person //
+  var tdNew1 = document.createElement("td");
+  var input1 = document.createElement("input");  
+  tdNew1.appendChild(input1);  
+  trNew.appendChild(tdNew1);
+  lastTR.appendChild(trNew);
+  // Column Person //
+  // Column Who //
+  var tdNew2 = document.createElement("td");
+  var input2 = document.createElement("input");
+  input2.type ="text";
+  input2.setAttribute("id", "who" + intCount);
+  input2.setAttribute("name", "who" + intCount);
+   tdNew2.appendChild(input2);  
+  trNew.appendChild(tdNew2);
+  lastTR.appendChild(trNew);
+  // Column Who //
+  // Column Minutes //
+  var tdNew3 = document.createElement("td");
+  var input3 = document.createElement("input");
+  input3.type ="text";
+  input3.setAttribute("id", "minutes" + intCount);
+  input3.setAttribute("name", "minutes" + intCount);
+  tdNew3.appendChild(input3);  
+  trNew.appendChild(tdNew3);
+  lastTR.appendChild(trNew);
+  // Column Minutes
+  // Column Time
+  var tdNew4 = document.createElement("td");
+  tdNew4.setAttribute("id", "time" + intCount);
+  trNew.appendChild(tdNew4);
+  lastTR.appendChild(trNew);
+  // Column Time
+  // Column Start Button //
+  var tdNew5 = document.createElement("td");
+  var buttonNew = document.createElement("button");
+  var t = document.createTextNode("Start");
+  buttonNew.appendChild(t);
+  buttonNew.setAttribute("id", "btnInject" + intCount);
+  buttonNew.setAttribute("onclick", "GoGo(" + intCount + ")");
+  tdNew5.appendChild(buttonNew);  
+  trNew.appendChild(tdNew5);
+  lastTR.appendChild(trNew);
+  // Column Start Button //
+  // Column Clear Button //
+  var tdNew6 = document.createElement("td");
+  var buttonNew6 = document.createElement("button");
+  var t1 = document.createTextNode("Clear");    
+  buttonNew6.appendChild(t1);
+  buttonNew6.setAttribute("id", "btnClear" + intCount);
+  tdNew6.appendChild(buttonNew6);  
+  trNew.appendChild(tdNew6);
+  lastTR.appendChild(trNew);
+  // Column Clear Button //
+  
+  intCount++; 
+}
+
+function GoGo(intNumber)
+{
+     var minminute = "minutes" + intNumber;
+	 var minclear = "btnClear" + intNumber;
+	 SetTime(document.getElementById(minminute).value, "#time" + intNumber, document.getElementById(minclear));
+}
+
+
+  </script>
+  </body>
+</html>
